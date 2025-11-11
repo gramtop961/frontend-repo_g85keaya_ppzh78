@@ -22,7 +22,7 @@ export default function App() {
   const render = () => {
     switch (page) {
       case "Dashboard":
-        return <Dashboard />;
+        return <Dashboard onNavigate={setPage} />;
       case "Analytics":
         return <Analytics />;
       case "Settings":
@@ -36,7 +36,7 @@ export default function App() {
       case "Ad Campaigns":
         return <Placeholder title="Ad Campaigns" />;
       default:
-        return <Dashboard />;
+        return <Dashboard onNavigate={setPage} />;
     }
   };
 

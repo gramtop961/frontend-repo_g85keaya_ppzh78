@@ -30,6 +30,9 @@ function MetricCard({ title, value, change = 0.0, trend = "up" }) {
 }
 
 function VoiceAssistant() {
+  const handleStart = () => {
+    alert("Voice assistant coming soon: I'll summarize your day and draft follow-ups.");
+  };
   return (
     <div className="relative bg-white rounded-xl p-4 shadow-sm border border-gray-100 overflow-hidden">
       <div className="absolute inset-0 opacity-70 pointer-events-none" style={{ background: "radial-gradient(120px 120px at 50% 50%, rgba(99,102,241,0.2), transparent)", }} />
@@ -38,7 +41,7 @@ function VoiceAssistant() {
           <div className="text-sm font-medium text-gray-900">Voice Assistant</div>
           <div className="text-xs text-gray-500">"Summarize my day"</div>
         </div>
-        <button className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm hover:opacity-95">
+        <button onClick={handleStart} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm hover:opacity-95">
           <Mic className="w-4 h-4" /> Start
         </button>
       </div>
@@ -46,7 +49,7 @@ function VoiceAssistant() {
   );
 }
 
-function LeadWidget() {
+function LeadWidget({ onNavigate }) {
   const leads = [
     { name: "Sofia Ramirez", status: "Qualified", next: "Book call" },
     { name: "James Lee", status: "New", next: "Auto-qualify" },
@@ -59,7 +62,7 @@ function LeadWidget() {
           <div className="text-sm font-medium text-gray-900">Lead Capture & Qualification</div>
           <div className="text-xs text-gray-500">Budget, property type, timeline, scoring, auto-booking</div>
         </div>
-        <button className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-500">
+        <button onClick={() => onNavigate?.("Leads")} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-500">
           <Plus className="w-4 h-4" /> Add Lead
         </button>
       </div>
@@ -78,7 +81,7 @@ function LeadWidget() {
   );
 }
 
-function AppointmentWidget() {
+function AppointmentWidget({ onNavigate }) {
   const today = new Date();
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
 
@@ -161,7 +164,7 @@ function AppointmentWidget() {
           <button onClick={goNext} className="p-1.5 rounded-md border border-gray-200 hover:bg-gray-50" aria-label="Next month">
             <ChevronRight className="w-4 h-4" />
           </button>
-          <button className="ml-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm hover:opacity-95">
+          <button onClick={() => onNavigate?.("Appointments")} className="ml-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm hover:opacity-95">
             <Cal className="w-4 h-4" /> Book
           </button>
         </div>
@@ -206,12 +209,14 @@ function AppointmentWidget() {
   );
 }
 
-function PropertyManager() {
+function PropertyManager({ onNavigate }) {
+  const handleAdd = () => onNavigate?.("Properties");
+  const handleFilters = () => alert("Filter panel coming soon: price range, beds/baths, neighborhoods.");
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
       <div className="flex items-center gap-2 mb-3">
         <div className="text-sm font-medium text-gray-900 flex-1">Property Listing Management</div>
-        <button className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm hover:opacity-95">
+        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-sm hover:opacity-95">
           <Plus className="w-4 h-4" /> Add Property
         </button>
       </div>
@@ -220,7 +225,7 @@ function PropertyManager() {
           <Search className="w-4 h-4 text-gray-400" />
           <input className="bg-transparent outline-none w-full text-sm" placeholder="Search properties..." />
         </div>
-        <button className="text-xs px-2.5 py-1 rounded-md bg-gray-100 text-gray-700">Filters</button>
+        <button onClick={handleFilters} className="text-xs px-2.5 py-1 rounded-md bg-gray-100 text-gray-700">Filters</button>
       </div>
       <div className="grid grid-cols-3 gap-3">
         {Array.from({ length: 6 }).map((_, i) => (
@@ -238,6 +243,7 @@ function PropertyManager() {
 }
 
 function ValuationWidget() {
+  const handleGenerate = () => alert("AI Valuation report will be generated with comps and market trends.");
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
       <div className="text-sm font-medium text-gray-900 mb-3">AI Property Valuation</div>
@@ -248,7 +254,7 @@ function ValuationWidget() {
         <input className="px-3 py-2 rounded-lg bg-gray-50 text-sm outline-none" placeholder="Square Footage" />
         <input className="px-3 py-2 rounded-lg bg-gray-50 text-sm outline-none col-span-2" placeholder="Type" />
       </div>
-      <button className="mt-3 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-500">
+      <button onClick={handleGenerate} className="mt-3 inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-500">
         <BadgeDollarSign className="w-4 h-4" /> Generate AI Valuation Report
       </button>
       <div className="mt-3 text-xs text-gray-600">Market Trends • Days on Market • Valuation Graph</div>
@@ -263,13 +269,16 @@ function ActivitiesFeed() {
     "Property Matcher sent 8 matches",
     "Ads Manager optimized budget by 12%",
   ];
+  const handleClick = (text) => alert(text);
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
       <div className="text-sm font-medium text-gray-900 mb-3">AI Agent Activities</div>
       <ul className="space-y-2">
         {items.map((t, i) => (
           <li key={i} className="text-sm text-gray-700 flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" /> {t}
+            <button onClick={() => handleClick(t)} className="flex items-center gap-2 w-full text-left px-2 py-1 rounded hover:bg-gray-50">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" /> {t}
+            </button>
           </li>
         ))}
       </ul>
@@ -277,7 +286,7 @@ function ActivitiesFeed() {
   );
 }
 
-export default function Dashboard() {
+export default function Dashboard({ onNavigate }) {
   return (
     <div className="p-6 space-y-6">
       <div className="relative h-48 rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
@@ -291,8 +300,8 @@ export default function Dashboard() {
             <div className="text-sm text-gray-500">Use quick actions to get started</div>
           </div>
           <div className="flex items-center gap-2">
-            <button className="px-3 py-2 rounded-lg bg-gray-900 text-white text-sm">Book appointment</button>
-            <button className="px-3 py-2 rounded-lg bg-white text-gray-900 border border-gray-200 text-sm">Add property</button>
+            <button onClick={() => onNavigate?.("Appointments")} className="px-3 py-2 rounded-lg bg-gray-900 text-white text-sm">Book appointment</button>
+            <button onClick={() => onNavigate?.("Properties")} className="px-3 py-2 rounded-lg bg-white text-gray-900 border border-gray-200 text-sm">Add property</button>
           </div>
         </div>
       </div>
@@ -305,13 +314,13 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <LeadWidget />
-        <AppointmentWidget />
+        <LeadWidget onNavigate={onNavigate} />
+        <AppointmentWidget onNavigate={onNavigate} />
         <ActivitiesFeed />
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <PropertyManager />
+        <PropertyManager onNavigate={onNavigate} />
         <ValuationWidget />
         <VoiceAssistant />
       </div>
